@@ -9,7 +9,7 @@ public class PostDto {
     private String title;
     private String description;
 
-    public PostDto getPostDTO() {
+    public PostDto toPublicData() {
         PostDto postDto = new PostDto();
         postDto.ID = this.ID;
         postDto.title = this.title;

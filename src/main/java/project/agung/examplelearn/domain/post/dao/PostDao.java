@@ -15,10 +15,13 @@ public class PostDao {
         return post;
     }
 
-    public Post setPostDAOUpdateAction(UpdatePostRequest updatePostRequest) {
-        Post post = new Post();
-        post.setTitle(updatePostRequest.getTitle());
-        post.setDescription(updatePostRequest.getDescription());
+    public Post setPostDAOUpdateAction(Post post, UpdatePostRequest updatePostRequest) {
+        if(updatePostRequest.getTitle() != null) {
+            post.setTitle(updatePostRequest.getTitle());
+        }
+        if(updatePostRequest.getDescription() != null) {
+            post.setDescription(updatePostRequest.getDescription());
+        }
         return post;
     }
 
