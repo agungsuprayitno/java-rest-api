@@ -48,12 +48,7 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> getAll(){
-        List<Post> listPost = getAllPostService.getAllPost();
-        return new ResponseEntity<>(listPost, HttpStatus.OK);
-    }
-    @GetMapping("/all1")
-    public ResponseEntity<Object> getAll1(){
+    public ResponseEntity<Object> getAll(){
         List<Post> listPost = getAllPostService.getAllPost();
         ApiResponse<List<Post>> response = new ApiResponse<>(listPost, null);
 
