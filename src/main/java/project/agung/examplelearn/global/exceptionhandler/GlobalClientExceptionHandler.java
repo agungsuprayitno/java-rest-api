@@ -3,18 +3,20 @@ package project.agung.examplelearn.global.exceptionhandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import project.agung.examplelearn.global.entity.BodyException;
 import project.agung.examplelearn.global.entity.ErrorException;
-
-import java.util.HashMap;
-import java.util.Map;
+import project.agung.examplelearn.global.entity.ValidationException;
+import project.agung.examplelearn.global.entity.ValidationErrorsException;
 
 @ControllerAdvice
 public class GlobalClientExceptionHandler {
@@ -41,18 +43,39 @@ public class GlobalClientExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorExceptionJson);
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public Map<String, String> handleValidationExceptions(
-//            MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return errors;
-//    }
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ErrorException onConstraintValidationException(
+            ConstraintViolationException e) {
+        ValidationErrorsException error = new ValidationErrorsException();
+        error.setStatus(400);
+        error.setMessage("Bad Error Request.");
+        error.setCode("bad-error-request");
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getValidationExceptions().add(
+                    new ValidationException(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        this.errorException.setBodyException(error);
+        return this.errorException;
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ErrorException onMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
+        ValidationErrorsException error = new ValidationErrorsException();
+        error.setStatus(400);
+        error.setMessage("Validation Error Requests.");
+        error.setCode("validation-error");
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            error.getValidationExceptions().add(
+                    new ValidationException(fieldError.getField(), fieldError.getDefaultMessage()));
+        }
+        this.errorException.setBodyException(error);
+        return this.errorException;
+    }
 
     // Add more exception handlers as needed
 }
