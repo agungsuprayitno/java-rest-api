@@ -1,12 +1,10 @@
 package project.agung.examplelearn.global.exceptionhandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,17 +28,14 @@ public class GlobalClientExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) throws JsonProcessingException {
+    @ResponseBody
+    ErrorException handleEntityNotFoundException(EntityNotFoundException ex) throws JsonProcessingException {
         this.bodyException.setStatus(HttpStatus.NOT_FOUND.value());
         this.bodyException.setCode(ex.getCause().getMessage());
         this.bodyException.setMessage(ex.getMessage());
 
         this.errorException.setBodyException(this.bodyException);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String errorExceptionJson = mapper.writeValueAsString(this.errorException);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorExceptionJson);
+        return this.errorException;
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

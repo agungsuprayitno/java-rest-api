@@ -14,12 +14,15 @@ import project.agung.examplelearn.domain.post.services.CreatePostService;
 import project.agung.examplelearn.domain.post.services.GetAllPostService;
 import project.agung.examplelearn.domain.post.services.GetPerPagePostService;
 import project.agung.examplelearn.domain.post.services.UpdatePostService;
+import project.agung.examplelearn.global.response.ApiResponse;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/post")
 public class PostController {
+
+//    private ApiResponse apiResponse;
     private final GetPerPagePostService getPerPagePostService;
     private final GetAllPostService getAllPostService;
     private final CreatePostService createPostService;
@@ -35,6 +38,7 @@ public class PostController {
         this.getAllPostService = getAllPostService;
         this.createPostService = createPostService;
         this.updatePostService = updatePostService;
+//        this.apiResponse = apiResponse;
     }
 
     @GetMapping
@@ -47,6 +51,13 @@ public class PostController {
     public ResponseEntity<List<Post>> getAll(){
         List<Post> listPost = getAllPostService.getAllPost();
         return new ResponseEntity<>(listPost, HttpStatus.OK);
+    }
+    @GetMapping("/all1")
+    public ResponseEntity<Object> getAll1(){
+        List<Post> listPost = getAllPostService.getAllPost();
+        ApiResponse<List<Post>> response = new ApiResponse<>(listPost, null);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
