@@ -1,5 +1,6 @@
 package project.agung.examplelearn.domain.post.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class PostController {
     }
 
     @PostMapping
-    public void createPost(@RequestBody CreatePostRequest request) {
+    public void createPost(@Valid @RequestBody CreatePostRequest request) {
         createPostService.createPost(request);
     }
 
