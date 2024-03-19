@@ -1,4 +1,4 @@
-package project.agung.examplelearn.global.entity;
+package project.agung.examplelearn.global.entity.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

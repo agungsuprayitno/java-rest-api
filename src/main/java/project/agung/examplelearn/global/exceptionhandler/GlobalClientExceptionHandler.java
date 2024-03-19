@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import project.agung.examplelearn.global.entity.BodyException;
-import project.agung.examplelearn.global.entity.ErrorException;
-import project.agung.examplelearn.global.entity.ValidationException;
-import project.agung.examplelearn.global.entity.ValidationErrorsException;
+import project.agung.examplelearn.global.entity.exception.BodyException;
+import project.agung.examplelearn.global.entity.exception.ErrorException;
+import project.agung.examplelearn.global.entity.exception.ValidationException;
+import project.agung.examplelearn.global.entity.exception.ValidationErrorsException;
 
 @ControllerAdvice
 public class GlobalClientExceptionHandler {
