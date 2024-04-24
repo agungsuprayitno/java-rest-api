@@ -72,5 +72,17 @@ public class GlobalClientExceptionHandler {
         return this.errorException;
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ErrorException illegalArgumentException(IllegalArgumentException ex) {
+        this.bodyException.setStatus(HttpStatus.BAD_REQUEST.value());
+        this.bodyException.setCode(ex.getCause().getMessage());
+        this.bodyException.setMessage(ex.getMessage());
+
+        this.errorException.setBodyException(this.bodyException);
+        return this.errorException;
+    }
+
     // Add more exception handlers as needed
 }
