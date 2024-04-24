@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import project.agung.examplelearn.domain.post.dao.PostDao;
 import project.agung.examplelearn.domain.post.dto.PostDto;
-import project.agung.examplelearn.domain.post.request.GetPerPageRequest;
 import project.agung.examplelearn.domain.post.services.CreatePostService;
 import project.agung.examplelearn.domain.post.services.GetAllPostService;
 import project.agung.examplelearn.domain.post.services.GetPerPagePostService;
@@ -43,8 +42,4 @@ public class PostConfig {
         return new UpdatePostService();
     }
 
-    @Bean
-    public GetPerPageRequest getPerPageRequest() {
-        return new GetPerPageRequest();
-    }
 }
